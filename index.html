@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#05010f">
+<title>NEÓN // Spanish Drill — A1 → C2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05010f;
+  --bg-2:#0a0420;
+  --grid:rgba(0,240,255,0.06);
+  --panel:rgba(16,4,40,0.72);
+  --panel-edge:rgba(0,240,255,0.35);
+  --text:#e6f7ff;
+  --text-soft:#9ab8c8;
+  --text-dim:#5a6f7d;
+  --cyan:#00f0ff;
+  --magenta:#ff2bd6;
+  --purple:#9d3cff;
+  --yellow:#fff200;
+  --red:#ff3860;
+  --green:#39ff88;
+  --orange:#ff9b3c;
+  --shadow-cyan:0 0 18px rgba(0,240,255,.45), 0 0 38px rgba(0,240,255,.18);
+  --shadow-mag:0 0 18px rgba(255,43,214,.55), 0 0 42px rgba(255,43,214,.18);
+}
+
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:'Rajdhani', 'Share Tech Mono', system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  overscroll-behavior:none;
+  position:relative;
+}
+
+/* — global atmospherics — */
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% -10%, rgba(157,60,255,.35), transparent 60%),
+    radial-gradient(ellipse 80% 60% at 100% 110%, rgba(255,43,214,.25), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 60% 50%, rgba(0,240,255,.08), transparent 70%);
+  pointer-events:none; z-index:0;
+}
+body::after{
+  content:"";
+  position:fixed; inset:0;
+  background:
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0/40px 40px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/40px 40px;
+  mask-image:radial-gradient(ellipse at center, black 40%, transparent 85%);
+  pointer-events:none; z-index:0;
+  animation:gridDrift 60s linear infinite;
+}
+@keyframes gridDrift{
+  from{background-position:0 0, 0 0;}
+  to{background-position:40px 40px, 40px 40px;}
+}
+/* scanlines */
+.scanlines{
+  position:fixed; inset:0; pointer-events:none; z-index:50;
+  background:repeating-linear-gradient(
+    0deg, rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px,
+    rgba(0,240,255,.025) 3px, rgba(0,240,255,.025) 3px);
+  mix-blend-mode:overlay;
+}
+
+h1,h2,h3,h4,.heading{
+  font-family:'Orbitron', 'Share Tech Mono', monospace;
+  font-weight:700;
+  letter-spacing:.04em;
+  margin:0;
+  text-transform:uppercase;
+}
+button{font-family:inherit; cursor:pointer; border:none; background:none; color:inherit;}
+
+.app{
+  position:relative; z-index:1;
+  display:flex; flex-direction:column; height:100dvh;
+  max-width:780px; margin:0 auto;
+}
+
+/* — top bar — */
+.appbar{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px;
+  border-bottom:1px solid rgba(0,240,255,.18);
+  background:linear-gradient(180deg, rgba(5,1,15,.85), rgba(5,1,15,.55));
+  backdrop-filter:blur(6px);
+  position:sticky; top:0; z-index:10;
+}
+.appbar .left{display:flex; align-items:center; gap:12px; min-width:0;}
+.brand{
+  font-family:'Orbitron', monospace; font-weight:800;
+  font-size:18px; letter-spacing:.18em;
+  color:var(--cyan);
+  text-shadow:0 0 6px rgba(0,240,255,.55), 0 0 18px rgba(0,240,255,.25);
+}
+.brand .slash{color:var(--magenta); text-shadow:0 0 6px rgba(255,43,214,.7);}
+.brand-sub{
+  font-family:'Share Tech Mono', monospace;
+  color:var(--text-soft); font-size:11px; letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.icon-btn{
+  width:40px; height:40px; border-radius:6px;
+  border:1px solid rgba(0,240,255,.35);
+  background:rgba(0,240,255,.04);
+  display:inline-flex; align-items:center; justify-content:center;
+  color:var(--cyan);
+  transition:background .15s, transform .15s, box-shadow .2s, border-color .15s;
+  flex-shrink:0;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+.icon-btn:hover{
+  background:rgba(0,240,255,.12);
+  border-color:var(--cyan);
+  box-shadow:var(--shadow-cyan);
+}
+.icon-btn:active{transform:scale(.95);}
+.icon-btn svg{width:18px; height:18px; stroke-width:2;}
+
+main{
+  flex:1; overflow-y:auto;
+  padding:18px 18px 28px;
+  scroll-behavior:smooth;
+}
+main::-webkit-scrollbar{width:6px;}
+main::-webkit-scrollbar-thumb{background:rgba(0,240,255,.3); border-radius:6px;}
+
+/* — home — */
+.hero{
+  margin:4px 0 18px;
+  padding:18px 4px 4px;
+}
+.hero h2{
+  font-size:30px;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta) 55%, var(--purple));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  filter:drop-shadow(0 0 8px rgba(255,43,214,.35));
+  position:relative;
+}
+.hero .lead{
+  color:var(--text-soft); margin:6px 0 0;
+  font-family:'Share Tech Mono', monospace; font-size:13px; letter-spacing:.06em;
+}
+.hero .lead .blink{
+  color:var(--cyan);
+  animation:blink 1.2s steps(2,start) infinite;
+}
+@keyframes blink{to{visibility:hidden;}}
+
+.section-label{
+  display:flex; align-items:center; gap:10px;
+  font-family:'Orbitron', monospace; font-size:11px; letter-spacing:.32em;
+  color:var(--cyan); text-transform:uppercase;
+  margin:22px 4px 12px;
+}
+.section-label::before{
+  content:""; width:14px; height:2px;
+  background:linear-gradient(90deg, var(--cyan), transparent);
+}
+.section-label::after{
+  content:""; flex:1; height:1px;
+  background:linear-gradient(90deg, rgba(0,240,255,.4), transparent);
+}
+
+.levels{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+}
+@media (max-width:520px){
+  .levels{grid-template-columns:repeat(2, 1fr);}
+}
+.level-card{
+  position:relative;
+  border:1px solid rgba(0,240,255,.25);
+  background:linear-gradient(160deg, rgba(16,4,40,.85), rgba(8,2,24,.7));
+  padding:14px 14px 12px;
+  text-align:left;
+  color:var(--text);
+  clip-path:polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  transition:transform .15s, border-color .2s, box-shadow .25s;
+}
+.level-card:hover{
+  border-color:var(--cyan);
+  box-shadow:var(--shadow-cyan);
+  transform:translateY(-1px);
+}
+.level-card.active{
+  border-color:var(--magenta);
+  box-shadow:var(--shadow-mag);
+}
+.level-tag{
+  font-family:'Orbitron', monospace; font-size:22px; font-weight:800;
+  letter-spacing:.06em;
+  color:var(--cyan);
+  text-shadow:0 0 8px rgba(0,240,255,.55);
+}
+.level-card.active .level-tag{color:var(--magenta); text-shadow:0 0 8px rgba(255,43,214,.7);}
+.level-name{
+  font-family:'Share Tech Mono', monospace;
+  color:var(--text-soft); font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; margin-top:2px;
+}
+.level-meta{
+  color:var(--text-dim); font-size:11px; margin-top:6px;
+  font-family:'Share Tech Mono', monospace;
+}
+
+.cat-grid{
+  display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+  margin-top:6px;
+}
+@media (max-width:520px){
+  .cat-grid{grid-template-columns:1fr;}
+}
+.cat-card{
+  position:relative; text-align:left;
+  padding:18px 16px;
+  border:1px solid rgba(157,60,255,.35);
+  background:linear-gradient(160deg, rgba(28,8,60,.8), rgba(10,2,30,.85));
+  clip-path:polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  color:var(--text);
+  transition:transform .15s, border-color .2s, box-shadow .25s;
+  overflow:hidden;
+}
+.cat-card::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  opacity:.55;
+}
+.cat-card:hover{
+  transform:translateY(-2px);
+  border-color:var(--magenta);
+  box-shadow:var(--shadow-mag);
+}
+.cat-card .ico{
+  font-family:'Orbitron', monospace; color:var(--magenta);
+  font-size:11px; letter-spacing:.28em;
+}
+.cat-card h3{
+  font-size:22px; margin-top:4px;
+  color:var(--text);
+  text-shadow:0 0 10px rgba(255,43,214,.25);
+}
+.cat-card .desc{
+  margin-top:6px; font-size:13px; color:var(--text-soft);
+  font-family:'Share Tech Mono', monospace; line-height:1.45;
+}
+.cat-card .stats{
+  margin-top:10px;
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'Share Tech Mono', monospace; font-size:11px;
+  color:var(--text-dim); letter-spacing:.08em;
+}
+.cat-card .stats .done{color:var(--green);}
+.progress-bar{
+  margin-top:8px; height:4px; width:100%;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(0,240,255,.18);
+  overflow:hidden;
+}
+.progress-bar > i{
+  display:block; height:100%; width:0%;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  box-shadow:0 0 8px rgba(0,240,255,.5);
+}
+
+/* — study screen — */
+.study{
+  display:flex; flex-direction:column; gap:18px;
+  height:100%;
+  padding-top:4px;
+}
+.crumb{
+  display:flex; align-items:center; gap:12px;
+  font-family:'Share Tech Mono', monospace; font-size:12px; letter-spacing:.14em;
+  color:var(--text-soft); text-transform:uppercase;
+}
+.crumb .pill{
+  padding:4px 10px; border:1px solid rgba(0,240,255,.4); color:var(--cyan);
+  clip-path:polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  text-shadow:0 0 6px rgba(0,240,255,.4);
+}
+.crumb .pill.m{border-color:rgba(255,43,214,.5); color:var(--magenta); text-shadow:0 0 6px rgba(255,43,214,.5);}
+
+.deckhead{
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'Share Tech Mono', monospace; font-size:12px;
+  color:var(--text-soft); letter-spacing:.1em;
+}
+.deckhead .count{color:var(--cyan); text-shadow:0 0 6px rgba(0,240,255,.5);}
+
+.stage{
+  position:relative; flex:1;
+  display:flex; align-items:center; justify-content:center;
+  min-height:330px;
+  perspective:1400px;
+}
+
+.card{
+  position:relative;
+  width:min(94%, 480px);
+  aspect-ratio: 3 / 4.2;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  transition:transform .55s cubic-bezier(.2,.8,.2,1), opacity .25s;
+  user-select:none;
+  touch-action:pan-y;
+}
+.card.flipped{transform:rotateY(180deg);}
+
+.face{
+  position:absolute; inset:0;
+  border:1px solid rgba(0,240,255,.4);
+  background:
+    linear-gradient(155deg, rgba(20,4,50,.92), rgba(6,2,22,.95));
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  display:flex; flex-direction:column; padding:24px 22px;
+  clip-path:polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+  box-shadow:0 0 0 1px rgba(255,43,214,.06) inset,
+             0 20px 50px rgba(0,0,0,.55),
+             0 0 40px rgba(0,240,255,.12);
+  overflow:hidden;
+}
+.face::before{
+  content:""; position:absolute; top:0; left:0; right:0; height:3px;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  opacity:.7;
+}
+.face::after{
+  content:""; position:absolute; bottom:0; right:0;
+  width:80px; height:80px;
+  background:radial-gradient(circle at 100% 100%, rgba(255,43,214,.22), transparent 70%);
+  pointer-events:none;
+}
+.face.back{
+  transform:rotateY(180deg);
+  border-color:rgba(255,43,214,.45);
+}
+.face.back::before{background:linear-gradient(90deg, var(--magenta), var(--purple));}
+
+.face .meta{
+  display:flex; justify-content:space-between; align-items:center;
+  font-family:'Share Tech Mono', monospace; font-size:11px;
+  color:var(--text-dim); letter-spacing:.18em; text-transform:uppercase;
+}
+.face .meta .id{color:var(--cyan);}
+.face .meta .gender{
+  padding:2px 8px; border:1px solid rgba(0,240,255,.35); color:var(--cyan);
+  font-size:10px;
+}
+.face .meta .gender.f{border-color:rgba(255,43,214,.45); color:var(--magenta);}
+
+.face .word-wrap{
+  flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center;
+  text-align:center; padding:8px 4px;
+  gap:14px;
+}
+.face .word{
+  font-family:'Orbitron', monospace;
+  font-weight:700;
+  font-size:clamp(28px, 7vw, 44px);
+  letter-spacing:.01em;
+  color:var(--text);
+  text-shadow:0 0 14px rgba(0,240,255,.45), 0 0 26px rgba(0,240,255,.15);
+  line-height:1.1;
+  word-break:break-word;
+}
+.face.back .word{
+  text-shadow:0 0 14px rgba(255,43,214,.5), 0 0 28px rgba(255,43,214,.18);
+  font-size:clamp(24px, 6vw, 38px);
+}
+.face .pron{
+  font-family:'Share Tech Mono', monospace;
+  color:var(--text-soft); font-size:13px; letter-spacing:.08em;
+}
+.face .hint{
+  font-family:'Share Tech Mono', monospace;
+  position:absolute; bottom:18px; left:0; right:0; text-align:center;
+  color:var(--text-dim); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+}
+
+.speak{
+  position:absolute; top:18px; right:18px;
+  width:46px; height:46px;
+  border:1px solid var(--cyan);
+  background:rgba(0,240,255,.08);
+  color:var(--cyan);
+  display:inline-flex; align-items:center; justify-content:center;
+  transition:background .15s, transform .15s, box-shadow .2s;
+  clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  box-shadow:0 0 14px rgba(0,240,255,.3);
+  z-index:3;
+}
+.speak:hover{background:rgba(0,240,255,.2); box-shadow:var(--shadow-cyan);}
+.speak:active{transform:scale(.94);}
+.speak.playing{animation:pulse 1s ease-in-out infinite;}
+@keyframes pulse{
+  0%,100%{box-shadow:0 0 14px rgba(0,240,255,.4);}
+  50%{box-shadow:0 0 28px rgba(0,240,255,.85), 0 0 60px rgba(0,240,255,.3);}
+}
+
+/* conjugation table on verb back */
+.conj{
+  display:grid; grid-template-columns:auto 1fr; row-gap:5px; column-gap:12px;
+  font-family:'Share Tech Mono', monospace;
+  width:100%; max-width:300px;
+  font-size:14px;
+}
+.conj .pn{color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; font-size:11px; text-align:right;}
+.conj .form{color:var(--text);}
+.conj .form b{color:var(--magenta);}
+
+/* phrase formatting */
+.face .phrase-en{
+  font-size:clamp(18px, 4.5vw, 24px);
+  color:var(--text);
+  font-family:'Rajdhani', sans-serif; font-weight:600;
+  text-shadow:0 0 12px rgba(255,43,214,.4);
+  line-height:1.3;
+}
+.face .phrase-note{
+  color:var(--text-soft); font-size:12px; margin-top:8px;
+  font-family:'Share Tech Mono', monospace; letter-spacing:.06em;
+}
+
+/* — action buttons (know / don't know / flip) — */
+.actions{
+  display:grid; grid-template-columns:1fr auto 1fr; gap:10px;
+  align-items:center;
+  padding:8px 6px 14px;
+}
+.btn{
+  font-family:'Orbitron', monospace; font-weight:600;
+  font-size:13px; letter-spacing:.18em; text-transform:uppercase;
+  padding:14px 16px;
+  border:1px solid var(--cyan);
+  background:rgba(0,240,255,.06);
+  color:var(--cyan);
+  clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition:background .15s, transform .15s, box-shadow .2s;
+  text-shadow:0 0 8px rgba(0,240,255,.4);
+}
+.btn:hover{background:rgba(0,240,255,.15); box-shadow:var(--shadow-cyan);}
+.btn:active{transform:scale(.97);}
+.btn.fail{border-color:var(--red); color:var(--red); text-shadow:0 0 8px rgba(255,56,96,.4); background:rgba(255,56,96,.06);}
+.btn.fail:hover{background:rgba(255,56,96,.14); box-shadow:0 0 18px rgba(255,56,96,.45);}
+.btn.pass{border-color:var(--green); color:var(--green); text-shadow:0 0 8px rgba(57,255,136,.4); background:rgba(57,255,136,.06);}
+.btn.pass:hover{background:rgba(57,255,136,.14); box-shadow:0 0 18px rgba(57,255,136,.45);}
+.btn.flip{
+  border-color:var(--magenta); color:var(--magenta); text-shadow:0 0 8px rgba(255,43,214,.4);
+  background:rgba(255,43,214,.06); padding:14px 22px;
+}
+.btn.flip:hover{background:rgba(255,43,214,.18); box-shadow:var(--shadow-mag);}
+
+/* swipe hints */
+.swipe-hint{
+  position:absolute; top:50%; transform:translateY(-50%);
+  font-family:'Orbitron', monospace; font-size:11px; letter-spacing:.3em;
+  color:var(--text-dim); text-transform:uppercase;
+  opacity:.55; pointer-events:none;
+  writing-mode:vertical-rl; text-orientation:mixed;
+}
+.swipe-hint.left{left:6px; color:var(--red);}
+.swipe-hint.right{right:6px; color:var(--green);}
+@media (max-width:520px){.swipe-hint{display:none;}}
+
+/* glitch on title transition */
+.glitch{position:relative; display:inline-block;}
+.glitch::before, .glitch::after{
+  content:attr(data-text);
+  position:absolute; left:0; top:0; width:100%;
+  background:transparent;
+  overflow:hidden;
+  pointer-events:none;
+}
+.glitch::before{color:var(--cyan); transform:translate(-2px, 0); mix-blend-mode:screen; clip-path:inset(0 0 60% 0);}
+.glitch::after{color:var(--magenta); transform:translate(2px, 0); mix-blend-mode:screen; clip-path:inset(60% 0 0 0);}
+
+/* — toast — */
+.toast{
+  position:fixed; left:50%; bottom:80px; transform:translate(-50%, 12px);
+  font-family:'Share Tech Mono', monospace; font-size:12px; letter-spacing:.16em;
+  padding:10px 16px; color:var(--cyan); text-transform:uppercase;
+  border:1px solid var(--cyan);
+  background:rgba(0,240,255,.08);
+  opacity:0; transition:opacity .25s, transform .25s;
+  pointer-events:none; z-index:60;
+  clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  box-shadow:var(--shadow-cyan);
+}
+.toast.show{opacity:1; transform:translate(-50%, 0);}
+.toast.fail{color:var(--red); border-color:var(--red); background:rgba(255,56,96,.08); box-shadow:0 0 18px rgba(255,56,96,.4);}
+.toast.pass{color:var(--green); border-color:var(--green); background:rgba(57,255,136,.08); box-shadow:0 0 18px rgba(57,255,136,.4);}
+
+/* completed view */
+.done{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; gap:14px; padding:40px 20px;
+}
+.done h3{
+  font-size:32px;
+  background:linear-gradient(90deg, var(--cyan), var(--magenta));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.done p{color:var(--text-soft); font-family:'Share Tech Mono', monospace; letter-spacing:.06em; max-width:380px; line-height:1.5;}
+
+/* modal */
+.backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
+  z-index:100; display:none; align-items:center; justify-content:center; padding:20px;
+}
+.backdrop.show{display:flex;}
+.modal{
+  width:min(420px, 100%);
+  background:linear-gradient(160deg, rgba(20,4,50,.97), rgba(6,2,22,.98));
+  border:1px solid var(--cyan);
+  box-shadow:var(--shadow-cyan);
+  padding:24px 22px;
+  clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+}
+.modal h3{font-size:18px; color:var(--cyan); margin-bottom:14px; text-shadow:0 0 8px rgba(0,240,255,.4);}
+.modal .row{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+.modal label{font-family:'Share Tech Mono', monospace; font-size:11px; color:var(--text-soft); letter-spacing:.18em; text-transform:uppercase;}
+.modal select, .modal input[type=range]{
+  background:rgba(0,240,255,.06);
+  border:1px solid rgba(0,240,255,.4);
+  color:var(--text);
+  padding:8px 10px;
+  font-family:'Share Tech Mono', monospace; font-size:13px;
+  outline:none;
+}
+.modal input[type=range]{accent-color:var(--magenta); padding:0;}
+.modal .modal-actions{display:flex; gap:10px; justify-content:flex-end;}
+.modal .btn{padding:10px 16px; font-size:12px;}
+
+/* hidden */
+.hidden{display:none !important;}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<div class="app">
+  <!-- Top bar -->
+  <header class="appbar">
+    <div class="left">
+      <button class="icon-btn" id="backBtn" title="Back" aria-label="Back" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div>
+        <div class="brand">NEÓN<span class="slash">//</span>ES</div>
+        <div class="brand-sub" id="appSub">A1 → C2 · ESPAÑA</div>
+      </div>
+    </div>
+    <button class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 008.91 19a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 005 8.91a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <main id="main"></main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Settings modal -->
+<div class="backdrop" id="backdrop">
+  <div class="modal">
+    <h3>// SYSTEM CONFIG</h3>
+    <div class="row">
+      <label>Voice</label>
+      <select id="voiceSel"></select>
+    </div>
+    <div class="row">
+      <label>Speech rate · <span id="rateVal">0.95</span></label>
+      <input type="range" id="rateInput" min="0.6" max="1.4" step="0.05" value="0.95">
+    </div>
+    <div class="modal-actions">
+      <button class="btn fail" id="resetBtn">Reset progress</button>
+      <button class="btn" id="closeBtn">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ========================================================================
+   NEÓN // Spanish drill — A1 → C2 with Spain audio
+   ======================================================================== */
+
+/* ---------- Vocabulary data ---------- */
+/* g: 'm' = masculino, 'f' = femenino, 'mf' = común. Verbs include sample
+   present-tense conjugations for the highlighted (yo) form. */
+
+const VOCAB = {
+  A1: {
+    nouns: [
+      {w:"familia", e:"family", g:"f"},
+      {w:"padre", e:"father", g:"m"},
+      {w:"madre", e:"mother", g:"f"},
+      {w:"hijo", e:"son", g:"m"},
+      {w:"hija", e:"daughter", g:"f"},
+      {w:"hermano", e:"brother", g:"m"},
+      {w:"hermana", e:"sister", g:"f"},
+      {w:"amigo", e:"friend (m)", g:"m"},
+      {w:"amiga", e:"friend (f)", g:"f"},
+      {w:"casa", e:"house / home", g:"f"},
+      {w:"coche", e:"car", g:"m"},
+      {w:"agua", e:"water", g:"f"},
+      {w:"pan", e:"bread", g:"m"},
+      {w:"café", e:"coffee", g:"m"},
+      {w:"leche", e:"milk", g:"f"},
+      {w:"día", e:"day", g:"m"},
+      {w:"noche", e:"night", g:"f"},
+      {w:"año", e:"year", g:"m"},
+      {w:"hora", e:"hour / time", g:"f"},
+      {w:"libro", e:"book", g:"m"},
+      {w:"mesa", e:"table", g:"f"},
+      {w:"silla", e:"chair", g:"f"},
+      {w:"perro", e:"dog", g:"m"},
+      {w:"gato", e:"cat", g:"m"},
+      {w:"ciudad", e:"city", g:"f"},
+      {w:"calle", e:"street", g:"f"},
+      {w:"nombre", e:"name", g:"m"},
+      {w:"hombre", e:"man", g:"m"},
+      {w:"mujer", e:"woman", g:"f"},
+      {w:"niño", e:"child / boy", g:"m"},
+    ],
+    verbs: [
+      {i:"ser", e:"to be (essence)", c:"soy / eres / es"},
+      {i:"estar", e:"to be (state)", c:"estoy / estás / está"},
+      {i:"tener", e:"to have", c:"tengo / tienes / tiene"},
+      {i:"hacer", e:"to do / to make", c:"hago / haces / hace"},
+      {i:"ir", e:"to go", c:"voy / vas / va"},
+      {i:"venir", e:"to come", c:"vengo / vienes / viene"},
+      {i:"hablar", e:"to speak", c:"hablo / hablas / habla"},
+      {i:"comer", e:"to eat", c:"como / comes / come"},
+      {i:"beber", e:"to drink", c:"bebo / bebes / bebe"},
+      {i:"vivir", e:"to live", c:"vivo / vives / vive"},
+      {i:"querer", e:"to want / to love", c:"quiero / quieres / quiere"},
+      {i:"poder", e:"can / to be able", c:"puedo / puedes / puede"},
+      {i:"saber", e:"to know (facts)", c:"sé / sabes / sabe"},
+      {i:"ver", e:"to see", c:"veo / ves / ve"},
+      {i:"dar", e:"to give", c:"doy / das / da"},
+      {i:"decir", e:"to say / to tell", c:"digo / dices / dice"},
+      {i:"llamarse", e:"to be called", c:"me llamo / te llamas / se llama"},
+      {i:"gustar", e:"to like / to please", c:"me gusta / te gusta / le gusta"},
+      {i:"trabajar", e:"to work", c:"trabajo / trabajas / trabaja"},
+      {i:"estudiar", e:"to study", c:"estudio / estudias / estudia"},
+    ],
+    phrases: [
+      {s:"Hola", e:"Hello", n:"Casual or formal — works everywhere."},
+      {s:"Buenos días", e:"Good morning", n:"Used until ~midday."},
+      {s:"Buenas tardes", e:"Good afternoon / evening", n:"From midday until ~8 pm."},
+      {s:"Buenas noches", e:"Good night / good evening", n:"Greeting and parting at night."},
+      {s:"¿Cómo estás?", e:"How are you?", n:"Informal — to a friend."},
+      {s:"¿Qué tal?", e:"How's it going?", n:"Very common in Spain."},
+      {s:"Muy bien, gracias", e:"Very well, thanks", n:""},
+      {s:"Me llamo…", e:"My name is…", n:"Lit. 'I call myself…'"},
+      {s:"¿Cómo te llamas?", e:"What's your name?", n:"Informal."},
+      {s:"Mucho gusto", e:"Nice to meet you", n:""},
+      {s:"Por favor", e:"Please", n:""},
+      {s:"Gracias", e:"Thank you", n:""},
+      {s:"De nada", e:"You're welcome", n:""},
+      {s:"Sí", e:"Yes", n:""},
+      {s:"No", e:"No", n:""},
+      {s:"Perdón", e:"Sorry / Excuse me", n:""},
+      {s:"Lo siento", e:"I'm sorry", n:"Stronger / more sincere apology."},
+      {s:"Adiós", e:"Goodbye", n:""},
+      {s:"Hasta luego", e:"See you later", n:"Standard parting in Spain."},
+      {s:"Hasta mañana", e:"See you tomorrow", n:""},
+      {s:"¿Hablas inglés?", e:"Do you speak English?", n:"Informal."},
+      {s:"No entiendo", e:"I don't understand", n:""},
+      {s:"¿Puedes repetir?", e:"Can you repeat?", n:""},
+      {s:"Más despacio, por favor", e:"Slower, please", n:""},
+      {s:"Tengo hambre", e:"I'm hungry", n:"Lit. 'I have hunger'."},
+      {s:"Tengo sed", e:"I'm thirsty", n:""},
+    ],
+  },
+
+  A2: {
+    nouns: [
+      {w:"trabajo", e:"work / job", g:"m"},
+      {w:"oficina", e:"office", g:"f"},
+      {w:"escuela", e:"school", g:"f"},
+      {w:"universidad", e:"university", g:"f"},
+      {w:"tienda", e:"shop", g:"f"},
+      {w:"mercado", e:"market", g:"m"},
+      {w:"restaurante", e:"restaurant", g:"m"},
+      {w:"hotel", e:"hotel", g:"m"},
+      {w:"playa", e:"beach", g:"f"},
+      {w:"montaña", e:"mountain", g:"f"},
+      {w:"viaje", e:"trip", g:"m"},
+      {w:"avión", e:"plane", g:"m"},
+      {w:"tren", e:"train", g:"m"},
+      {w:"autobús", e:"bus", g:"m"},
+      {w:"billete", e:"ticket (Spain)", g:"m"},
+      {w:"dinero", e:"money", g:"m"},
+      {w:"cuenta", e:"bill / account", g:"f"},
+      {w:"camisa", e:"shirt", g:"f"},
+      {w:"pantalón", e:"trousers", g:"m"},
+      {w:"zapato", e:"shoe", g:"m"},
+      {w:"vestido", e:"dress", g:"m"},
+      {w:"abrigo", e:"coat", g:"m"},
+      {w:"sombrero", e:"hat", g:"m"},
+      {w:"cabeza", e:"head", g:"f"},
+      {w:"mano", e:"hand", g:"f"},
+      {w:"pie", e:"foot", g:"m"},
+      {w:"corazón", e:"heart", g:"m"},
+      {w:"cuerpo", e:"body", g:"m"},
+      {w:"fiesta", e:"party", g:"f"},
+      {w:"regalo", e:"gift", g:"m"},
+    ],
+    verbs: [
+      {i:"comprar", e:"to buy", c:"compro / compras / compra"},
+      {i:"vender", e:"to sell", c:"vendo / vendes / vende"},
+      {i:"llegar", e:"to arrive", c:"llego / llegas / llega"},
+      {i:"salir", e:"to leave / go out", c:"salgo / sales / sale"},
+      {i:"viajar", e:"to travel", c:"viajo / viajas / viaja"},
+      {i:"esperar", e:"to wait / to hope", c:"espero / esperas / espera"},
+      {i:"encontrar", e:"to find / to meet", c:"encuentro / encuentras / encuentra"},
+      {i:"buscar", e:"to look for", c:"busco / buscas / busca"},
+      {i:"abrir", e:"to open", c:"abro / abres / abre"},
+      {i:"cerrar", e:"to close", c:"cierro / cierras / cierra"},
+      {i:"escribir", e:"to write", c:"escribo / escribes / escribe"},
+      {i:"leer", e:"to read", c:"leo / lees / lee"},
+      {i:"escuchar", e:"to listen", c:"escucho / escuchas / escucha"},
+      {i:"oír", e:"to hear", c:"oigo / oyes / oye"},
+      {i:"jugar", e:"to play", c:"juego / juegas / juega"},
+      {i:"correr", e:"to run", c:"corro / corres / corre"},
+      {i:"caminar", e:"to walk", c:"camino / caminas / camina"},
+      {i:"dormir", e:"to sleep", c:"duermo / duermes / duerme"},
+      {i:"despertarse", e:"to wake up", c:"me despierto / te despiertas / se despierta"},
+      {i:"levantarse", e:"to get up", c:"me levanto / te levantas / se levanta"},
+      {i:"ducharse", e:"to shower", c:"me ducho / te duchas / se ducha"},
+      {i:"vestirse", e:"to get dressed", c:"me visto / te vistes / se viste"},
+      {i:"llamar", e:"to call", c:"llamo / llamas / llama"},
+      {i:"pagar", e:"to pay", c:"pago / pagas / paga"},
+      {i:"preguntar", e:"to ask", c:"pregunto / preguntas / pregunta"},
+      {i:"contestar", e:"to answer", c:"contesto / contestas / contesta"},
+    ],
+    phrases: [
+      {s:"¿Cuánto cuesta?", e:"How much is it?", n:""},
+      {s:"¿Dónde está…?", e:"Where is…?", n:""},
+      {s:"Estoy buscando…", e:"I'm looking for…", n:""},
+      {s:"¿A qué hora?", e:"At what time?", n:""},
+      {s:"¿Qué hora es?", e:"What time is it?", n:""},
+      {s:"Tengo una reserva", e:"I have a reservation", n:""},
+      {s:"La cuenta, por favor", e:"The bill, please", n:""},
+      {s:"Quería un café, por favor", e:"I'd like a coffee, please", n:"Polite imperfect = softer than 'quiero'."},
+      {s:"Para mí, una caña", e:"For me, a small beer", n:"'Caña' = small draft beer in Spain."},
+      {s:"Vale", e:"OK / sounds good", n:"Spain's all-purpose agreement word."},
+      {s:"Claro", e:"Of course / sure", n:""},
+      {s:"Tal vez / Quizás", e:"Maybe", n:""},
+      {s:"Ahora mismo", e:"Right now", n:""},
+      {s:"Otra vez", e:"Again", n:""},
+      {s:"Estoy de acuerdo", e:"I agree", n:""},
+      {s:"No estoy de acuerdo", e:"I disagree", n:""},
+      {s:"Tengo frío", e:"I'm cold", n:""},
+      {s:"Tengo calor", e:"I'm hot", n:""},
+      {s:"Tengo sueño", e:"I'm sleepy", n:""},
+      {s:"Tengo prisa", e:"I'm in a hurry", n:""},
+      {s:"Estoy cansado/a", e:"I'm tired", n:""},
+      {s:"Estoy enfermo/a", e:"I'm sick", n:""},
+      {s:"¿Me puedes ayudar?", e:"Can you help me?", n:""},
+      {s:"¿Cómo se dice…?", e:"How do you say…?", n:""},
+      {s:"¿Qué significa…?", e:"What does … mean?", n:""},
+    ],
+  },
+
+  B1: {
+    nouns: [
+      {w:"empresa", e:"company", g:"f"},
+      {w:"reunión", e:"meeting", g:"f"},
+      {w:"proyecto", e:"project", g:"m"},
+      {w:"informe", e:"report", g:"m"},
+      {w:"jefe", e:"boss", g:"m"},
+      {w:"compañero", e:"colleague", g:"m"},
+      {w:"sueldo", e:"salary", g:"m"},
+      {w:"contrato", e:"contract", g:"m"},
+      {w:"horario", e:"schedule", g:"m"},
+      {w:"experiencia", e:"experience", g:"f"},
+      {w:"problema", e:"problem", g:"m"},
+      {w:"solución", e:"solution", g:"f"},
+      {w:"opinión", e:"opinion", g:"f"},
+      {w:"decisión", e:"decision", g:"f"},
+      {w:"sentimiento", e:"feeling", g:"m"},
+      {w:"recuerdo", e:"memory / souvenir", g:"m"},
+      {w:"sueño", e:"dream / sleep", g:"m"},
+      {w:"miedo", e:"fear", g:"m"},
+      {w:"alegría", e:"joy", g:"f"},
+      {w:"tristeza", e:"sadness", g:"f"},
+      {w:"esperanza", e:"hope", g:"f"},
+      {w:"costumbre", e:"custom / habit", g:"f"},
+      {w:"medio ambiente", e:"environment", g:"m"},
+      {w:"salud", e:"health", g:"f"},
+      {w:"enfermedad", e:"illness", g:"f"},
+      {w:"medicina", e:"medicine", g:"f"},
+      {w:"cita", e:"appointment / date", g:"f"},
+      {w:"noticia", e:"piece of news", g:"f"},
+      {w:"periódico", e:"newspaper", g:"m"},
+      {w:"sociedad", e:"society", g:"f"},
+    ],
+    verbs: [
+      {i:"pensar", e:"to think", c:"pienso / piensas / piensa"},
+      {i:"creer", e:"to believe", c:"creo / crees / cree"},
+      {i:"recordar", e:"to remember", c:"recuerdo / recuerdas / recuerda"},
+      {i:"olvidar", e:"to forget", c:"olvido / olvidas / olvida"},
+      {i:"decidir", e:"to decide", c:"decido / decides / decide"},
+      {i:"conocer", e:"to know (person/place)", c:"conozco / conoces / conoce"},
+      {i:"entender", e:"to understand", c:"entiendo / entiendes / entiende"},
+      {i:"explicar", e:"to explain", c:"explico / explicas / explica"},
+      {i:"intentar", e:"to try", c:"intento / intentas / intenta"},
+      {i:"conseguir", e:"to achieve / to get", c:"consigo / consigues / consigue"},
+      {i:"perder", e:"to lose", c:"pierdo / pierdes / pierde"},
+      {i:"ganar", e:"to win / to earn", c:"gano / ganas / gana"},
+      {i:"mejorar", e:"to improve", c:"mejoro / mejoras / mejora"},
+      {i:"cambiar", e:"to change", c:"cambio / cambias / cambia"},
+      {i:"empezar", e:"to start", c:"empiezo / empiezas / empieza"},
+      {i:"terminar", e:"to finish", c:"termino / terminas / termina"},
+      {i:"acabar", e:"to finish / to just-do", c:"acabo / acabas / acaba"},
+      {i:"seguir", e:"to follow / to keep", c:"sigo / sigues / sigue"},
+      {i:"sentir", e:"to feel", c:"siento / sientes / siente"},
+      {i:"sentirse", e:"to feel (oneself)", c:"me siento / te sientes / se siente"},
+      {i:"acordarse", e:"to remember (refl.)", c:"me acuerdo / te acuerdas / se acuerda"},
+      {i:"darse cuenta", e:"to realise", c:"me doy cuenta / te das cuenta / se da cuenta"},
+      {i:"parecer", e:"to seem", c:"parezco / pareces / parece"},
+      {i:"importar", e:"to matter / mind", c:"me importa / te importa / le importa"},
+      {i:"preocuparse", e:"to worry", c:"me preocupo / te preocupas / se preocupa"},
+      {i:"quejarse", e:"to complain", c:"me quejo / te quejas / se queja"},
+    ],
+    phrases: [
+      {s:"Me parece que…", e:"It seems to me that…", n:"Soft opinion intro."},
+      {s:"Creo que sí / que no", e:"I think so / I don't think so", n:""},
+      {s:"En mi opinión…", e:"In my opinion…", n:""},
+      {s:"Estoy pensando en…", e:"I'm thinking about…", n:""},
+      {s:"Tengo ganas de…", e:"I feel like…", n:"Followed by an infinitive."},
+      {s:"Hace falta…", e:"It's needed / you need to…", n:""},
+      {s:"Vale la pena", e:"It's worth it", n:""},
+      {s:"De repente", e:"All of a sudden", n:""},
+      {s:"A lo mejor", e:"Maybe / perhaps", n:"Used with indicative."},
+      {s:"Por cierto", e:"By the way", n:""},
+      {s:"O sea", e:"I mean / that is", n:"Reformulating; very common."},
+      {s:"Es decir", e:"That is to say", n:""},
+      {s:"En realidad", e:"Actually", n:""},
+      {s:"Sin embargo", e:"However", n:""},
+      {s:"Aunque…", e:"Although / even though…", n:""},
+      {s:"Por eso", e:"That's why", n:""},
+      {s:"Para que…", e:"So that…", n:"+ subjunctive."},
+      {s:"Echar de menos", e:"To miss (someone)", n:"Spain-typical."},
+      {s:"Dar igual", e:"To not matter / I don't mind", n:"'Me da igual.'"},
+      {s:"Estar de mal humor", e:"To be in a bad mood", n:""},
+      {s:"Llevarse bien con…", e:"To get on well with…", n:""},
+      {s:"Tener razón", e:"To be right", n:""},
+      {s:"Hacer caso", e:"To pay attention / heed", n:""},
+      {s:"Salir adelante", e:"To get by / move forward", n:""},
+      {s:"Estar harto/a de…", e:"To be fed up with…", n:""},
+    ],
+  },
+
+  B2: {
+    nouns: [
+      {w:"política", e:"politics", g:"f"},
+      {w:"gobierno", e:"government", g:"m"},
+      {w:"economía", e:"economy", g:"f"},
+      {w:"empresa", e:"company", g:"f"},
+      {w:"impuesto", e:"tax", g:"m"},
+      {w:"ley", e:"law", g:"f"},
+      {w:"derecho", e:"right / law", g:"m"},
+      {w:"deber", e:"duty", g:"m"},
+      {w:"investigación", e:"research / investigation", g:"f"},
+      {w:"conocimiento", e:"knowledge", g:"m"},
+      {w:"desarrollo", e:"development", g:"m"},
+      {w:"crecimiento", e:"growth", g:"m"},
+      {w:"compromiso", e:"commitment", g:"m"},
+      {w:"actitud", e:"attitude", g:"f"},
+      {w:"comportamiento", e:"behaviour", g:"m"},
+      {w:"acuerdo", e:"agreement", g:"m"},
+      {w:"desacuerdo", e:"disagreement", g:"m"},
+      {w:"propuesta", e:"proposal", g:"f"},
+      {w:"objetivo", e:"objective / goal", g:"m"},
+      {w:"resultado", e:"result", g:"m"},
+      {w:"causa", e:"cause", g:"f"},
+      {w:"consecuencia", e:"consequence", g:"f"},
+      {w:"ventaja", e:"advantage", g:"f"},
+      {w:"desventaja", e:"disadvantage", g:"f"},
+      {w:"riesgo", e:"risk", g:"m"},
+      {w:"esfuerzo", e:"effort", g:"m"},
+      {w:"logro", e:"achievement", g:"m"},
+      {w:"reto", e:"challenge", g:"m"},
+      {w:"medio de comunicación", e:"media outlet", g:"m"},
+      {w:"prensa", e:"press", g:"f"},
+    ],
+    verbs: [
+      {i:"lograr", e:"to achieve / manage to", c:"logro / logras / logra"},
+      {i:"superar", e:"to overcome / to surpass", c:"supero / superas / supera"},
+      {i:"exigir", e:"to demand", c:"exijo / exiges / exige"},
+      {i:"suponer", e:"to suppose / to imply", c:"supongo / supones / supone"},
+      {i:"asegurar", e:"to assure / to ensure", c:"aseguro / aseguras / asegura"},
+      {i:"comprometerse", e:"to commit oneself", c:"me comprometo / te comprometes / se compromete"},
+      {i:"desempeñar", e:"to carry out / perform (a role)", c:"desempeño / desempeñas / desempeña"},
+      {i:"establecer", e:"to establish", c:"establezco / estableces / establece"},
+      {i:"plantear", e:"to raise / pose (a question)", c:"planteo / planteas / plantea"},
+      {i:"reflejar", e:"to reflect / show", c:"reflejo / reflejas / refleja"},
+      {i:"añadir", e:"to add", c:"añado / añades / añade"},
+      {i:"destacar", e:"to highlight / stand out", c:"destaco / destacas / destaca"},
+      {i:"señalar", e:"to point out / to signal", c:"señalo / señalas / señala"},
+      {i:"asumir", e:"to assume / take on", c:"asumo / asumes / asume"},
+      {i:"negar", e:"to deny", c:"niego / niegas / niega"},
+      {i:"reconocer", e:"to recognise / admit", c:"reconozco / reconoces / reconoce"},
+      {i:"rechazar", e:"to reject", c:"rechazo / rechazas / rechaza"},
+      {i:"aprobar", e:"to approve / pass", c:"apruebo / apruebas / aprueba"},
+      {i:"impedir", e:"to prevent", c:"impido / impides / impide"},
+      {i:"permitir", e:"to allow", c:"permito / permites / permite"},
+      {i:"prohibir", e:"to forbid", c:"prohíbo / prohíbes / prohíbe"},
+      {i:"mantener", e:"to maintain / keep", c:"mantengo / mantienes / mantiene"},
+      {i:"obtener", e:"to obtain", c:"obtengo / obtienes / obtiene"},
+      {i:"proporcionar", e:"to provide", c:"proporciono / proporcionas / proporciona"},
+      {i:"abordar", e:"to address / tackle", c:"abordo / abordas / aborda"},
+      {i:"resolver", e:"to solve", c:"resuelvo / resuelves / resuelve"},
+    ],
+    phrases: [
+      {s:"A pesar de…", e:"Despite / in spite of…", n:""},
+      {s:"En cuanto a…", e:"As for / regarding…", n:""},
+      {s:"Por lo tanto", e:"Therefore", n:""},
+      {s:"En definitiva", e:"In short / ultimately", n:""},
+      {s:"De hecho", e:"In fact", n:""},
+      {s:"Por un lado… por otro lado…", e:"On one hand… on the other…", n:""},
+      {s:"Cabe señalar que…", e:"It's worth noting that…", n:""},
+      {s:"Hay que tener en cuenta que…", e:"You have to bear in mind that…", n:""},
+      {s:"A medida que…", e:"As / to the extent that…", n:""},
+      {s:"Siempre y cuando…", e:"Provided that…", n:"+ subjunctive."},
+      {s:"En lugar de…", e:"Instead of…", n:""},
+      {s:"A raíz de…", e:"As a result of…", n:""},
+      {s:"Tener en cuenta", e:"To take into account", n:""},
+      {s:"Llevar a cabo", e:"To carry out", n:""},
+      {s:"Sacar partido a…", e:"To make the most of…", n:""},
+      {s:"Dejar claro que…", e:"To make clear that…", n:""},
+      {s:"Estar al tanto de…", e:"To be up to date / aware of…", n:""},
+      {s:"Poner en marcha", e:"To set in motion", n:""},
+      {s:"Salirse con la suya", e:"To get one's way", n:""},
+      {s:"No dar abasto", e:"To be overwhelmed (can't keep up)", n:""},
+      {s:"Pillarle el truco", e:"To get the hang of it", n:"Spain-typical."},
+      {s:"Currar / Currarse algo", e:"To work / to put effort in", n:"Spain slang."},
+      {s:"Estar de bajón", e:"To feel down", n:"Spain-typical."},
+      {s:"Quedarse en blanco", e:"To go blank", n:""},
+      {s:"Hacer la vista gorda", e:"To turn a blind eye", n:""},
+    ],
+  },
+
+  C1: {
+    nouns: [
+      {w:"índole", e:"nature / kind", g:"f"},
+      {w:"índice", e:"index / rate", g:"m"},
+      {w:"ámbito", e:"scope / sphere", g:"m"},
+      {w:"sesgo", e:"bias", g:"m"},
+      {w:"matiz", e:"nuance", g:"m"},
+      {w:"vínculo", e:"link / tie", g:"m"},
+      {w:"enfoque", e:"approach / focus", g:"m"},
+      {w:"hito", e:"milestone", g:"m"},
+      {w:"trasfondo", e:"background / undertone", g:"m"},
+      {w:"recelo", e:"misgiving / mistrust", g:"m"},
+      {w:"hallazgo", e:"finding / discovery", g:"m"},
+      {w:"desempeño", e:"performance", g:"m"},
+      {w:"vigencia", e:"validity / currency", g:"f"},
+      {w:"acogida", e:"reception / welcome", g:"f"},
+      {w:"alcance", e:"reach / scope", g:"m"},
+      {w:"despliegue", e:"deployment / display", g:"m"},
+      {w:"propósito", e:"purpose", g:"m"},
+      {w:"índole jurídica", e:"legal nature", g:"f"},
+      {w:"engranaje", e:"machinery / mechanism", g:"m"},
+      {w:"escollo", e:"obstacle / pitfall", g:"m"},
+      {w:"discrepancia", e:"discrepancy / disagreement", g:"f"},
+      {w:"perjuicio", e:"harm / detriment", g:"m"},
+      {w:"agudeza", e:"sharpness / wit", g:"f"},
+      {w:"prejuicio", e:"prejudice", g:"m"},
+      {w:"trayectoria", e:"trajectory / career", g:"f"},
+      {w:"envergadura", e:"scale / scope", g:"f"},
+      {w:"convicción", e:"conviction", g:"f"},
+      {w:"talante", e:"disposition / mood", g:"m"},
+      {w:"sosiego", e:"calm / serenity", g:"m"},
+      {w:"semblante", e:"countenance / look", g:"m"},
+    ],
+    verbs: [
+      {i:"vislumbrar", e:"to glimpse / make out", c:"vislumbro / vislumbras / vislumbra"},
+      {i:"desentrañar", e:"to unravel / decipher", c:"desentraño / desentrañas / desentraña"},
+      {i:"plantearse", e:"to consider / mull over", c:"me planteo / te planteas / se plantea"},
+      {i:"replantear", e:"to rethink / reframe", c:"replanteo / replanteas / replantea"},
+      {i:"manifestar", e:"to express / show", c:"manifiesto / manifiestas / manifiesta"},
+      {i:"prescindir", e:"to do without / dispense", c:"prescindo / prescindes / prescinde"},
+      {i:"acotar", e:"to delimit / narrow down", c:"acoto / acotas / acota"},
+      {i:"abogar", e:"to advocate for", c:"abogo / abogas / aboga"},
+      {i:"ahondar", e:"to delve into", c:"ahondo / ahondas / ahonda"},
+      {i:"sortear", e:"to dodge / to navigate", c:"sorteo / sorteas / sortea"},
+      {i:"esgrimir", e:"to wield / put forward (argument)", c:"esgrimo / esgrimes / esgrime"},
+      {i:"matizar", e:"to qualify / nuance", c:"matizo / matizas / matiza"},
+      {i:"recalcar", e:"to emphasise", c:"recalco / recalcas / recalca"},
+      {i:"acudir", e:"to attend / turn to", c:"acudo / acudes / acude"},
+      {i:"ejercer", e:"to exercise / practise", c:"ejerzo / ejerces / ejerce"},
+      {i:"vincular", e:"to link / tie", c:"vinculo / vinculas / vincula"},
+      {i:"divulgar", e:"to disclose / popularise", c:"divulgo / divulgas / divulga"},
+      {i:"discrepar", e:"to disagree", c:"discrepo / discrepas / discrepa"},
+      {i:"emprender", e:"to undertake / start (a venture)", c:"emprendo / emprendes / emprende"},
+      {i:"impulsar", e:"to drive / boost", c:"impulso / impulsas / impulsa"},
+      {i:"conllevar", e:"to entail / carry with it", c:"conlleva (mostly 3rd p.)"},
+      {i:"arraigar", e:"to take root", c:"arraigo / arraigas / arraiga"},
+      {i:"barajar", e:"to weigh up / consider (options)", c:"barajo / barajas / baraja"},
+      {i:"cuestionar", e:"to question / challenge", c:"cuestiono / cuestionas / cuestiona"},
+      {i:"socavar", e:"to undermine", c:"socavo / socavas / socava"},
+      {i:"entablar", e:"to strike up / initiate", c:"entablo / entablas / entabla"},
+    ],
+    phrases: [
+      {s:"A título personal…", e:"On a personal note / speaking for myself…", n:""},
+      {s:"Conviene matizar que…", e:"It's worth qualifying that…", n:""},
+      {s:"No obstante", e:"Nevertheless / however", n:""},
+      {s:"Si bien es cierto que…", e:"While it's true that…", n:""},
+      {s:"Dicho esto…", e:"That said…", n:""},
+      {s:"Por consiguiente", e:"Consequently", n:""},
+      {s:"En aras de…", e:"For the sake of…", n:""},
+      {s:"A grandes rasgos", e:"Broadly speaking", n:""},
+      {s:"Hablando en plata", e:"To put it plainly", n:"Idiomatic, Spain."},
+      {s:"De ahí que…", e:"Hence the fact that…", n:"+ subjunctive."},
+      {s:"En tanto que…", e:"Insofar as / as long as…", n:""},
+      {s:"A todas luces", e:"By all accounts", n:""},
+      {s:"En última instancia", e:"Ultimately", n:""},
+      {s:"En su justa medida", e:"In the right measure", n:""},
+      {s:"Al fin y al cabo", e:"At the end of the day", n:""},
+      {s:"Ni mucho menos", e:"Not by a long shot", n:""},
+      {s:"Sin ánimo de ofender", e:"With no offence intended", n:""},
+      {s:"Por más que…", e:"No matter how much…", n:"+ subjunctive."},
+      {s:"De por sí", e:"In and of itself", n:""},
+      {s:"A buen entendedor, pocas palabras", e:"A word to the wise is enough", n:"Refrán."},
+      {s:"Estar en su salsa", e:"To be in one's element", n:""},
+      {s:"Tirar la toalla", e:"To throw in the towel", n:""},
+      {s:"Pillar el toro por los cuernos", e:"To take the bull by the horns", n:""},
+      {s:"Buscarle tres pies al gato", e:"To overcomplicate / nitpick", n:"Spain refrán."},
+      {s:"No tener desperdicio", e:"To be excellent through and through", n:""},
+    ],
+  },
+
+  C2: {
+    nouns: [
+      {w:"acervo", e:"heritage / cultural body", g:"m"},
+      {w:"sino", e:"fate / destiny", g:"m"},
+      {w:"índole", e:"nature / character", g:"f"},
+      {w:"ínfulas", e:"airs / pretensions", g:"f"},
+      {w:"pundonor", e:"pride / point of honour", g:"m"},
+      {w:"empeño", e:"determination / endeavour", g:"m"},
+      {w:"ahínco", e:"vigour / earnestness", g:"m"},
+      {w:"denuedo", e:"valour / boldness", g:"m"},
+      {w:"sosegado talante", e:"calm disposition", g:"m"},
+      {w:"corolario", e:"corollary", g:"m"},
+      {w:"sintaxis", e:"syntax", g:"f"},
+      {w:"prosopopeya", e:"personification / pomposity", g:"f"},
+      {w:"falacia", e:"fallacy", g:"f"},
+      {w:"axioma", e:"axiom", g:"m"},
+      {w:"sofisma", e:"sophism / fallacy", g:"m"},
+      {w:"paradigma", e:"paradigm", g:"m"},
+      {w:"recelo", e:"misgiving", g:"m"},
+      {w:"recato", e:"modesty / discretion", g:"m"},
+      {w:"hartazgo", e:"surfeit / weariness", g:"m"},
+      {w:"hastío", e:"tedium / weariness", g:"m"},
+      {w:"desazón", e:"unease", g:"f"},
+      {w:"añoranza", e:"longing / nostalgia", g:"f"},
+      {w:"melindre", e:"fussiness / squeamishness", g:"m"},
+      {w:"sambenito", e:"stigma / unfair label", g:"m"},
+      {w:"prebenda", e:"sinecure / perk", g:"f"},
+      {w:"corruptela", e:"petty corruption", g:"f"},
+      {w:"venia", e:"permission / leave", g:"f"},
+      {w:"asueto", e:"day off / respite", g:"m"},
+      {w:"yerro", e:"error / mistake (literary)", g:"m"},
+      {w:"deslinde", e:"demarcation / boundary", g:"m"},
+    ],
+    verbs: [
+      {i:"dilucidar", e:"to elucidate / clarify", c:"dilucido / dilucidas / dilucida"},
+      {i:"esclarecer", e:"to clarify / shed light on", c:"esclarezco / esclareces / esclarece"},
+      {i:"profundizar", e:"to delve deeply", c:"profundizo / profundizas / profundiza"},
+      {i:"sopesar", e:"to weigh up", c:"sopeso / sopesas / sopesa"},
+      {i:"vituperar", e:"to vituperate / censure", c:"vitupero / vituperas / vitupera"},
+      {i:"denostar", e:"to revile", c:"denuesto / denuestas / denuesta"},
+      {i:"encomiar", e:"to praise / extol", c:"encomio / encomias / encomia"},
+      {i:"ensalzar", e:"to exalt / extol", c:"ensalzo / ensalzas / ensalza"},
+      {i:"escarnecer", e:"to scorn / mock", c:"escarnezco / escarneces / escarnece"},
+      {i:"sobreponerse", e:"to overcome / pull through", c:"me sobrepongo / te sobrepones / se sobrepone"},
+      {i:"condescender", e:"to condescend / yield", c:"condesciendo / condesciendes / condesciende"},
+      {i:"ataviarse", e:"to dress oneself / adorn", c:"me atavío / te atavías / se atavía"},
+      {i:"vislumbrar", e:"to glimpse / discern", c:"vislumbro / vislumbras / vislumbra"},
+      {i:"escudriñar", e:"to scrutinise", c:"escudriño / escudriñas / escudriña"},
+      {i:"trasegar", e:"to shift / decant / hustle", c:"trasiego / trasiegas / trasiega"},
+      {i:"otorgar", e:"to grant / bestow", c:"otorgo / otorgas / otorga"},
+      {i:"refrendar", e:"to endorse / ratify", c:"refrendo / refrendas / refrenda"},
+      {i:"recusar", e:"to recuse / challenge", c:"recuso / recusas / recusa"},
+      {i:"esgrimir", e:"to brandish / argue", c:"esgrimo / esgrimes / esgrime"},
+      {i:"abdicar", e:"to abdicate / renounce", c:"abdico / abdicas / abdica"},
+      {i:"propugnar", e:"to advocate", c:"propugno / propugnas / propugna"},
+      {i:"conjeturar", e:"to conjecture", c:"conjeturo / conjeturas / conjetura"},
+      {i:"discurrir", e:"to reason / wander (lit.)", c:"discurro / discurres / discurre"},
+      {i:"compaginar", e:"to combine / reconcile (schedules)", c:"compagino / compaginas / compagina"},
+      {i:"sucumbir", e:"to succumb", c:"sucumbo / sucumbes / sucumbe"},
+      {i:"erigir", e:"to erect / establish", c:"erijo / eriges / erige"},
+    ],
+    phrases: [
+      {s:"Cabe destacar que…", e:"It's worth highlighting that…", n:""},
+      {s:"A tenor de…", e:"In accordance with / in light of…", n:""},
+      {s:"En aras de…", e:"For the sake of…", n:""},
+      {s:"En virtud de…", e:"By virtue of…", n:""},
+      {s:"Habida cuenta de…", e:"Given / considering…", n:""},
+      {s:"Por más / por mucho que…", e:"However much…", n:"+ subjunctive."},
+      {s:"En lo concerniente a…", e:"As regards…", n:""},
+      {s:"A juzgar por…", e:"Judging by…", n:""},
+      {s:"De mano en mano", e:"From hand to hand", n:""},
+      {s:"En son de…", e:"In the manner of / in a … spirit", n:"'En son de paz' = in peace."},
+      {s:"Por antonomasia", e:"Par excellence", n:""},
+      {s:"A la sazón", e:"At that time", n:"Literary."},
+      {s:"De marras", e:"That self-same / aforementioned", n:""},
+      {s:"De suyo", e:"In itself / on its own", n:""},
+      {s:"A guisa de…", e:"By way of…", n:"Formal/literary."},
+      {s:"Vaya por delante que…", e:"Let it be said upfront that…", n:""},
+      {s:"En puridad", e:"Strictly speaking", n:""},
+      {s:"Sea como fuere", e:"Be that as it may", n:"+ subjunctive imperfecto."},
+      {s:"Por mor de…", e:"For the sake of / due to…", n:"Formal."},
+      {s:"Cual si…", e:"As if…", n:"Literary; + imperf. subj."},
+      {s:"Echar leña al fuego", e:"To add fuel to the fire", n:""},
+      {s:"Cantar las cuarenta", e:"To give someone a piece of one's mind", n:"Spain idiom."},
+      {s:"Llover sobre mojado", e:"It never rains but it pours / repeat issue", n:""},
+      {s:"No dejar títere con cabeza", e:"To leave no stone unturned (critique)", n:""},
+      {s:"Ser harina de otro costal", e:"To be a different matter entirely", n:""},
+      {s:"Estar en el candelero", e:"To be in the limelight", n:""},
+    ],
+  },
+};
+
+const LEVEL_DESC = {
+  A1:"Beginner — survival vocabulary, basic phrases.",
+  A2:"Elementary — daily life, simple transactions.",
+  B1:"Intermediate — opinions, feelings, work.",
+  B2:"Upper-Intermediate — abstract ideas, debate.",
+  C1:"Advanced — nuanced, idiomatic, professional.",
+  C2:"Mastery — literary register, refrán & idioma.",
+};
+
+const CATS = [
+  {key:"nouns",   label:"Sustantivos", en:"Nouns",    blurb:"Common nouns at this level."},
+  {key:"verbs",   label:"Verbos",     en:"Verbs",    blurb:"Core verbs with present-tense forms."},
+  {key:"phrases", label:"Frases",     en:"Phrases",  blurb:"Essential everyday expressions."},
+];
+
+/* ---------- Audio helpers ---------- */
+
+function normalize(s){
+  return String(s).toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+const AUDIO_BASE = "./audio/words/";
+const audioCache = {};
+const audio404 = new Set();
+
+function tryAudioFile(word){
+  return new Promise((resolve) => {
+    const key = normalize(word);
+    if(audio404.has(key)){ resolve(false); return; }
+    if(audioCache[key]){
+      const a = audioCache[key];
+      a.currentTime = 0;
+      a.play().then(()=>resolve(true)).catch(()=>{ audio404.add(key); resolve(false); });
+      return;
+    }
+    const a = new Audio(AUDIO_BASE + key + ".mp3");
+    a.addEventListener('error', () => { audio404.add(key); resolve(false); }, {once:true});
+    a.addEventListener('canplay', () => { audioCache[key] = a; }, {once:true});
+    a.play().then(()=>resolve(true)).catch(()=>{ audio404.add(key); resolve(false); });
+  });
+}
+
+const safeStore = (() => {
+  let mem = {};
+  try {
+    if(window.localStorage){
+      window.localStorage.setItem('__neon_probe__','1');
+      window.localStorage.removeItem('__neon_probe__');
+      return window.localStorage;
+    }
+  } catch { /* file://, sandboxed, or quota */ }
+  return {
+    getItem: (k) => mem[k] ?? null,
+    setItem: (k, v) => { mem[k] = String(v); },
+    removeItem: (k) => { delete mem[k]; },
+  };
+})();
+
+let voices = [];
+let chosenVoiceURI = safeStore.getItem('neon-voice') || '';
+let speechRate = parseFloat(safeStore.getItem('neon-rate') || '0.95');
+
+function loadVoices(){
+  voices = (window.speechSynthesis?.getVoices() || []).filter(v => v.lang && v.lang.toLowerCase().startsWith('es'));
+  // prefer Spain voices
+  voices.sort((a,b) => {
+    const aEs = a.lang.toLowerCase().includes('es-es');
+    const bEs = b.lang.toLowerCase().includes('es-es');
+    if(aEs && !bEs) return -1;
+    if(bEs && !aEs) return 1;
+    return a.name.localeCompare(b.name);
+  });
+}
+if(window.speechSynthesis){
+  loadVoices();
+  window.speechSynthesis.addEventListener?.('voiceschanged', loadVoices);
+}
+
+function ttsSpeak(text){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'es-ES';
+  u.rate = speechRate;
+  if(chosenVoiceURI){
+    const v = voices.find(v => v.voiceURI === chosenVoiceURI);
+    if(v) u.voice = v;
+  } else {
+    const spain = voices.find(v => v.lang.toLowerCase().includes('es-es'));
+    if(spain) u.voice = spain;
+  }
+  window.speechSynthesis.speak(u);
+}
+
+async function speak(text){
+  // Always prefer a prerecorded MP3 so the voice is consistent;
+  // fall back to device TTS only if no MP3 exists for this string.
+  const ok = await tryAudioFile(text);
+  if(ok) return;
+  ttsSpeak(text);
+}
+
+/* ---------- Progress ---------- */
+
+const PROGRESS_KEY = 'neon-progress-v1';
+function loadProgress(){
+  try { return JSON.parse(safeStore.getItem(PROGRESS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveProgress(p){
+  try { safeStore.setItem(PROGRESS_KEY, JSON.stringify(p)); } catch {}
+}
+let progress = loadProgress();
+
+function deckId(level, cat){ return level + '/' + cat; }
+function getDeckState(level, cat){
+  const id = deckId(level, cat);
+  if(!progress[id]) progress[id] = { boxes:{}, completed:0, total:0 };
+  return progress[id];
+}
+function itemId(level, cat, item){
+  if(cat === 'phrases') return level + ':p:' + (item.s);
+  if(cat === 'verbs')   return level + ':v:' + (item.i);
+  return level + ':n:' + (item.w);
+}
+
+/* ---------- Routing / rendering ---------- */
+
+const main = document.getElementById('main');
+const appSub = document.getElementById('appSub');
+const backBtn = document.getElementById('backBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const toastEl = document.getElementById('toast');
+
+let route = { name:'home' }; // {name:'study', level, cat, queue, idx, flipped, sessionDone}
+
+function navigate(r){
+  route = r;
+  if(route.name === 'home'){
+    backBtn.style.display = 'none';
+    appSub.textContent = 'A1 → C2 · ESPAÑA';
+  } else {
+    backBtn.style.display = '';
+    appSub.textContent = route.level + ' · ' + (CATS.find(c=>c.key===route.cat)?.en || '').toUpperCase();
+  }
+  render();
+}
+
+backBtn.onclick = () => navigate({name:'home'});
+
+function showToast(msg, cls){
+  toastEl.textContent = msg;
+  toastEl.className = 'toast' + (cls? ' '+cls : '');
+  toastEl.classList.add('show');
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=> toastEl.classList.remove('show'), 1100);
+}
+
+function render(){
+  if(route.name === 'home') renderHome();
+  else if(route.name === 'study') renderStudy();
+}
+
+function renderHome(){
+  const levels = Object.keys(VOCAB);
+  let html = `
+    <section class="hero">
+      <h2><span class="glitch" data-text="DRILL // ESPAÑOL">DRILL // ESPAÑOL</span></h2>
+      <p class="lead">// initialising deck protocol<span class="blink">_</span></p>
+    </section>
+
+    <div class="section-label">Select level</div>
+    <div class="levels">
+      ${levels.map(L => {
+        const total = CATS.reduce((s,c) => s + (VOCAB[L][c.key]?.length||0), 0);
+        const learned = CATS.reduce((s,c) => {
+          const st = getDeckState(L, c.key);
+          return s + Object.values(st.boxes).filter(b=>b>=3).length;
+        }, 0);
+        const cls = (route._selectedLevel === L) ? ' active' : '';
+        return `
+          <button class="level-card${cls}" data-level="${L}">
+            <div class="level-tag">${L}</div>
+            <div class="level-name">${L === 'A1' ? 'Beginner' : L === 'A2' ? 'Elementary' : L === 'B1' ? 'Intermediate' : L === 'B2' ? 'Upper-Int.' : L === 'C1' ? 'Advanced' : 'Mastery'}</div>
+            <div class="level-meta">${learned}/${total} drilled</div>
+          </button>`;
+      }).join('')}
+    </div>
+  `;
+
+  const sel = route._selectedLevel || 'A1';
+  html += `
+    <div class="section-label" style="margin-top:28px;">${sel} · ${LEVEL_DESC[sel]}</div>
+    <div class="cat-grid">
+      ${CATS.map(c => {
+        const items = VOCAB[sel][c.key] || [];
+        const st = getDeckState(sel, c.key);
+        const learned = Object.values(st.boxes).filter(b=>b>=3).length;
+        const pct = items.length ? Math.round(learned/items.length*100) : 0;
+        return `
+          <button class="cat-card" data-cat="${c.key}">
+            <div class="ico">// ${c.en.toUpperCase()}</div>
+            <h3>${c.label}</h3>
+            <div class="desc">${c.blurb}</div>
+            <div class="stats">
+              <span>${items.length} cards</span>
+              <span class="done">${pct}% drilled</span>
+            </div>
+            <div class="progress-bar"><i style="width:${pct}%"></i></div>
+          </button>`;
+      }).join('')}
+    </div>
+  `;
+
+  main.innerHTML = html;
+
+  main.querySelectorAll('.level-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      route._selectedLevel = btn.dataset.level;
+      render();
+      // scroll to category section
+      setTimeout(()=>{
+        const grid = main.querySelector('.cat-grid');
+        grid?.scrollIntoView({behavior:'smooth', block:'nearest'});
+      }, 50);
+    });
+  });
+  main.querySelectorAll('.cat-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      startStudy(route._selectedLevel || 'A1', btn.dataset.cat);
+    });
+  });
+}
+
+function startStudy(level, cat){
+  const items = VOCAB[level][cat].slice();
+  const state = getDeckState(level, cat);
+  // sort: lower-box items first, then unseen, then mastered
+  const queue = items.slice().sort((a,b) => {
+    const ka = itemId(level, cat, a), kb = itemId(level, cat, b);
+    const ba = state.boxes[ka] ?? 0, bb = state.boxes[kb] ?? 0;
+    return ba - bb;
+  });
+  // shuffle within same box
+  for(let i = queue.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [queue[i], queue[j]] = [queue[j], queue[i]];
+  }
+  // re-sort by box value after shuffle
+  queue.sort((a,b) => {
+    const ka = itemId(level, cat, a), kb = itemId(level, cat, b);
+    const ba = state.boxes[ka] ?? 0, bb = state.boxes[kb] ?? 0;
+    return ba - bb;
+  });
+  navigate({name:'study', level, cat, queue, idx:0, flipped:false});
+}
+
+function renderStudy(){
+  const { level, cat, queue, idx } = route;
+  const item = queue[idx];
+  if(!item){
+    main.innerHTML = `
+      <div class="done">
+        <h3>DECK CLEARED</h3>
+        <p>// you've cycled through every card in this deck. progress saved to local cache. swing back later to consolidate.</p>
+        <button class="btn flip" id="againBtn">Re-run deck</button>
+      </div>`;
+    document.getElementById('againBtn').onclick = () => startStudy(level, cat);
+    return;
+  }
+
+  const meta = CATS.find(c=>c.key===cat);
+  let front = '', back = '';
+  let spokenText = '';
+
+  if(cat === 'nouns'){
+    spokenText = item.w;
+    const STRESSED_A_FEM = new Set(['agua','águila','alma','arma','aula','hacha','hambre','ala','área','ave','aula','asa']);
+    let article;
+    if(item.g === 'mf') article = 'el/la';
+    else if(item.g === 'f' && !STRESSED_A_FEM.has(item.w)) article = 'la';
+    else article = 'el';
+    front = `
+      <div class="meta"><span class="id">${level} · ${meta.en}</span><span class="gender ${item.g==='f'?'f':''}">${item.g.toUpperCase()}</span></div>
+      <div class="word-wrap">
+        <div class="word">${escapeHtml(item.w)}</div>
+        <div class="pron">// ${article} ${escapeHtml(item.w)}</div>
+      </div>
+      <div class="hint">tap to flip · → know · ← unknown</div>`;
+    back = `
+      <div class="meta"><span class="id">${level} · TRANSLATION</span><span class="gender ${item.g==='f'?'f':''}">${item.g.toUpperCase()}</span></div>
+      <div class="word-wrap">
+        <div class="word">${escapeHtml(item.e)}</div>
+        <div class="pron">${article} ${escapeHtml(item.w)}</div>
+      </div>
+      <div class="hint">tap to flip back</div>`;
+  } else if(cat === 'verbs'){
+    spokenText = item.i;
+    front = `
+      <div class="meta"><span class="id">${level} · VERB</span><span class="gender">VRB</span></div>
+      <div class="word-wrap">
+        <div class="word">${escapeHtml(item.i)}</div>
+        <div class="pron">// infinitivo</div>
+      </div>
+      <div class="hint">tap to flip · → know · ← unknown</div>`;
+    const parts = item.c.split('/').map(s=>s.trim());
+    const pronouns = ['yo','tú','él/ella'];
+    const conjRows = parts.length === 3 ? parts.map((p,i)=>`<div class="pn">${pronouns[i]}</div><div class="form">${escapeHtml(p)}</div>`).join('') : `<div class="pn">presente</div><div class="form">${escapeHtml(item.c)}</div>`;
+    back = `
+      <div class="meta"><span class="id">${level} · TRANSLATION</span><span class="gender">PRS</span></div>
+      <div class="word-wrap">
+        <div class="word">${escapeHtml(item.e)}</div>
+        <div class="conj">${conjRows}</div>
+      </div>
+      <div class="hint">tap to flip back</div>`;
+  } else { // phrases
+    spokenText = item.s;
+    front = `
+      <div class="meta"><span class="id">${level} · PHRASE</span><span class="gender">FRS</span></div>
+      <div class="word-wrap">
+        <div class="word" style="font-size:clamp(22px,5.5vw,34px);">${escapeHtml(item.s)}</div>
+      </div>
+      <div class="hint">tap to flip · → know · ← unknown</div>`;
+    back = `
+      <div class="meta"><span class="id">${level} · TRANSLATION</span><span class="gender">EN</span></div>
+      <div class="word-wrap">
+        <div class="phrase-en">${escapeHtml(item.e)}</div>
+        ${item.n ? `<div class="phrase-note">// ${escapeHtml(item.n)}</div>` : ''}
+      </div>
+      <div class="hint">tap to flip back</div>`;
+  }
+
+  main.innerHTML = `
+    <div class="study">
+      <div class="crumb">
+        <span class="pill">${level}</span>
+        <span class="pill m">${meta.en}</span>
+      </div>
+      <div class="deckhead">
+        <span>// Card <span class="count">${idx+1}</span> / ${queue.length}</span>
+        <span>${remainingLabel(level, cat, queue)}</span>
+      </div>
+      <div class="stage">
+        <div class="swipe-hint left">← unknown</div>
+        <div class="swipe-hint right">know →</div>
+        <div class="card${route.flipped ? ' flipped':''}" id="card">
+          <div class="face front">
+            <button class="speak" id="speakBtn" aria-label="Play audio">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+              </svg>
+            </button>
+            ${front}
+          </div>
+          <div class="face back">
+            ${back}
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn fail" id="failBtn">No sé</button>
+        <button class="btn flip" id="flipBtn">Flip</button>
+        <button class="btn pass" id="passBtn">Lo sé</button>
+      </div>
+    </div>`;
+
+  const card = document.getElementById('card');
+  const speakBtn = document.getElementById('speakBtn');
+  const flipBtn = document.getElementById('flipBtn');
+  const failBtn = document.getElementById('failBtn');
+  const passBtn = document.getElementById('passBtn');
+
+  // flip
+  const flip = () => {
+    route.flipped = !route.flipped;
+    card.classList.toggle('flipped', route.flipped);
+  };
+  card.addEventListener('click', (e) => {
+    if(e.target.closest('.speak') || e.target.closest('button')) return;
+    flip();
+  });
+  flipBtn.addEventListener('click', flip);
+
+  // audio
+  const playAudio = async (e) => {
+    e?.stopPropagation();
+    speakBtn.classList.add('playing');
+    try {
+      await speak(spokenText);
+    } finally {
+      setTimeout(()=> speakBtn.classList.remove('playing'), 700);
+    }
+  };
+  speakBtn.addEventListener('click', playAudio);
+  // auto-play on showing the front
+  if(!route.flipped) setTimeout(()=> playAudio(), 250);
+
+  // swipe — only writes inline styles once the gesture clearly becomes a
+  // horizontal drag; tap-release always clears them so the .flipped class
+  // can drive the back-and-forth flip without an inline override.
+  const DRAG_THRESHOLD = 6;
+  let sx=0, sy=0, sw=0, sh=0, dragging=false, didDrag=false;
+  const clearDragStyles = () => {
+    card.style.transform = '';
+    card.style.opacity = '';
+  };
+  card.addEventListener('pointerdown', (e) => {
+    if(e.target.closest('button')) return;
+    dragging = true; didDrag = false;
+    sx = e.clientX; sy = e.clientY; sw = 0; sh = 0;
+    card.setPointerCapture(e.pointerId);
+  });
+  card.addEventListener('pointermove', (e) => {
+    if(!dragging) return;
+    sw = e.clientX - sx; sh = e.clientY - sy;
+    if(!didDrag && Math.abs(sw) < DRAG_THRESHOLD && Math.abs(sh) < DRAG_THRESHOLD) return;
+    if(Math.abs(sw) > Math.abs(sh)){
+      didDrag = true;
+      card.style.transform = `translateX(${sw}px) rotate(${sw/30}deg)` + (route.flipped ? ' rotateY(180deg)' : '');
+      card.style.opacity = 1 - Math.min(.4, Math.abs(sw)/600);
+    }
+  });
+  card.addEventListener('pointerup', () => {
+    if(!dragging) return;
+    dragging = false;
+    const dx = sw;
+    if(!didDrag){
+      // Pure tap — let the click handler do the flip; nothing to clean up.
+      sw = sh = 0;
+      return;
+    }
+    card.style.transition = 'transform .25s, opacity .25s';
+    if(Math.abs(dx) > 110){
+      card.style.transform = `translateX(${dx>0?600:-600}px) rotate(${dx>0?30:-30}deg)` + (route.flipped ? ' rotateY(180deg)' : '');
+      card.style.opacity = 0;
+      setTimeout(() => {
+        if(dx > 0) markKnown(); else markUnknown();
+      }, 220);
+    } else {
+      clearDragStyles();
+    }
+    sw = sh = 0;
+    setTimeout(()=> { card.style.transition = ''; }, 260);
+  });
+  card.addEventListener('pointercancel', () => {
+    dragging = false; didDrag = false;
+    clearDragStyles();
+  });
+
+  failBtn.addEventListener('click', markUnknown);
+  passBtn.addEventListener('click', markKnown);
+}
+
+function remainingLabel(level, cat, queue){
+  const state = getDeckState(level, cat);
+  const total = queue.length;
+  const learned = queue.filter(i => (state.boxes[itemId(level, cat, i)] ?? 0) >= 3).length;
+  return `${learned}/${total} drilled`;
+}
+
+function markKnown(){
+  const { level, cat, queue, idx } = route;
+  const item = queue[idx];
+  if(!item) return;
+  const state = getDeckState(level, cat);
+  const id = itemId(level, cat, item);
+  state.boxes[id] = Math.min((state.boxes[id] ?? 0) + 1, 4);
+  saveProgress(progress);
+  showToast('✓ Marked known', 'pass');
+  advance();
+}
+
+function markUnknown(){
+  const { level, cat, queue, idx } = route;
+  const item = queue[idx];
+  if(!item) return;
+  const state = getDeckState(level, cat);
+  const id = itemId(level, cat, item);
+  state.boxes[id] = 0;
+  // requeue this item further back
+  const itemRef = queue.splice(idx,1)[0];
+  const reinsertAt = Math.min(queue.length, idx + 4);
+  queue.splice(reinsertAt, 0, itemRef);
+  saveProgress(progress);
+  showToast('↺ Recycled', 'fail');
+  route.flipped = false;
+  render();
+}
+
+function advance(){
+  route.idx += 1;
+  route.flipped = false;
+  render();
+}
+
+function escapeHtml(s){
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+/* ---------- Settings modal ---------- */
+
+const backdrop = document.getElementById('backdrop');
+const voiceSel = document.getElementById('voiceSel');
+const rateInput = document.getElementById('rateInput');
+const rateVal = document.getElementById('rateVal');
+const closeBtn = document.getElementById('closeBtn');
+const resetBtn = document.getElementById('resetBtn');
+
+function refreshVoiceSelect(){
+  loadVoices();
+  voiceSel.innerHTML = '<option value="">— Auto (prefer Spain) —</option>' +
+    voices.map(v => `<option value="${v.voiceURI}"${v.voiceURI===chosenVoiceURI?' selected':''}>${v.name} · ${v.lang}</option>`).join('');
+}
+settingsBtn.onclick = () => {
+  refreshVoiceSelect();
+  rateInput.value = speechRate;
+  rateVal.textContent = speechRate.toFixed(2);
+  backdrop.classList.add('show');
+};
+closeBtn.onclick = () => backdrop.classList.remove('show');
+backdrop.addEventListener('click', e => { if(e.target === backdrop) backdrop.classList.remove('show'); });
+voiceSel.addEventListener('change', e => {
+  chosenVoiceURI = e.target.value;
+  try { safeStore.setItem('neon-voice', chosenVoiceURI); } catch {}
+});
+rateInput.addEventListener('input', e => {
+  speechRate = parseFloat(e.target.value);
+  rateVal.textContent = speechRate.toFixed(2);
+  try { safeStore.setItem('neon-rate', String(speechRate)); } catch {}
+});
+resetBtn.onclick = () => {
+  if(!confirm('Reset all progress?')) return;
+  try { safeStore.removeItem(PROGRESS_KEY); } catch {}
+  progress = {};
+  backdrop.classList.remove('show');
+  render();
+};
+
+/* ---------- Keyboard ---------- */
+
+document.addEventListener('keydown', (e) => {
+  if(route.name !== 'study') return;
+  if(backdrop.classList.contains('show')) return;
+  if(e.key === 'ArrowRight'){ e.preventDefault(); markKnown(); }
+  else if(e.key === 'ArrowLeft'){ e.preventDefault(); markUnknown(); }
+  else if(e.key === ' ' || e.key === 'Enter'){
+    e.preventDefault();
+    const card = document.getElementById('card');
+    route.flipped = !route.flipped;
+    card?.classList.toggle('flipped', route.flipped);
+  } else if(e.key.toLowerCase() === 's'){
+    e.preventDefault();
+    document.getElementById('speakBtn')?.click();
+  } else if(e.key === 'Escape'){
+    navigate({name:'home'});
+  }
+});
+
+/* ---------- Boot ---------- */
+
+window.addEventListener('error', (e) => {
+  const main = document.getElementById('main');
+  if(main){
+    main.innerHTML = `<div class="done"><h3>// SYS ERROR</h3><p style="text-align:left; font-size:11px; color:#ff3860; word-break:break-word;">${escapeHtml(String(e.message || e))}<br><br>${escapeHtml(String(e.filename || ''))}:${e.lineno || ''}:${e.colno || ''}</p></div>`;
+  }
+});
+
+try {
+  navigate({name:'home'});
+} catch(err) {
+  const main = document.getElementById('main');
+  if(main){
+    main.innerHTML = `<div class="done"><h3>// BOOT ERROR</h3><p style="text-align:left; font-size:11px; color:#ff3860;">${(err && err.message) || String(err)}</p></div>`;
+  }
+}
+</script>
+</body>
+</html>
