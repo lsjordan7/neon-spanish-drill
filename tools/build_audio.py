@@ -153,7 +153,36 @@ def parse_vocab(html: str) -> dict:
     return out
 
 
-def build_jobs(vocab: dict, kind_filter: str | None):
+def parse_themes(html: str) -> dict:
+    """Pull Spanish strings out of the DECKS object literal in index.html.
+
+    Returns {theme_key: [text, text, ...]} preserving order.
+    """
+    try:
+        decks_block = slice_balanced(html, r"const DECKS\s*=\s*\{", "{", "}")
+    except RuntimeError:
+        return {}
+    themes: dict[str, list[str]] = {}
+    # Each theme: <key>: { title:"...", en:"...", blurb:"...", badge:"...", cards: [ {s:"...", ...}, ... ] }
+    # Use the start of every "cards:" array, then iterate phrase objects inside.
+    for m in re.finditer(r"(?P<key>[a-zA-Z_][a-zA-Z0-9_]*)\s*:\s*\{[^{}]*cards\s*:\s*\[", decks_block):
+        key = m.group("key")
+        # Slice the cards array starting at the '['
+        sub_start = decks_block.rfind("[", 0, m.end())
+        if sub_start < 0:
+            continue
+        arr = slice_balanced(decks_block[sub_start:], r"^\[", "[", "]")
+        texts: list[str] = []
+        for obj in re.finditer(r"\{[^{}]*\}", arr):
+            sm = re.search(r"\bs\s*:\s*\"([^\"]+)\"", obj.group(0))
+            if sm:
+                texts.append(sm.group(1))
+        if texts:
+            themes[key] = texts
+    return themes
+
+
+def build_jobs(vocab: dict, themes: dict, kind_filter: str | None):
     seen = set()
     for L, cats in vocab.items():
         for cat, texts in cats.items():
@@ -165,6 +194,14 @@ def build_jobs(vocab: dict, kind_filter: str | None):
                     continue
                 seen.add(slug)
                 yield (f"{L}/{cat}", text, OUT / f"{slug}.mp3")
+    if kind_filter in (None, "themes"):
+        for tkey, texts in themes.items():
+            for text in texts:
+                slug = audio_slug(text)
+                if not slug or slug in seen:
+                    continue
+                seen.add(slug)
+                yield (f"theme/{tkey}", text, OUT / f"{slug}.mp3")
 
 
 async def gen_audio(text: str, path: Path, force: bool) -> str:
@@ -185,7 +222,7 @@ async def gen_audio(text: str, path: Path, force: bool) -> str:
 async def main() -> None:
     p = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     p.add_argument("--force", action="store_true", help="Regenerate even if files exist")
-    p.add_argument("--kind", choices=["nouns", "verbs", "phrases"], help="Only build one category")
+    p.add_argument("--kind", choices=["nouns", "verbs", "phrases", "themes"], help="Only build one category")
     p.add_argument("--limit", type=int, help="Stop after N clips (smoke test)")
     p.add_argument("--dry-run", action="store_true", help="List what would be built without calling the API")
     args = p.parse_args()
@@ -196,11 +233,14 @@ async def main() -> None:
 
     html = INDEX.read_text(encoding="utf-8")
     vocab = parse_vocab(html)
+    themes = parse_themes(html)
     for L, cats in vocab.items():
         n = sum(len(v) for v in cats.values())
         print(f"  {L}: nouns={len(cats['nouns'])} verbs={len(cats['verbs'])} phrases={len(cats['phrases'])} (total {n})")
+    for tkey, texts in themes.items():
+        print(f"  theme/{tkey}: {len(texts)} cards")
 
-    jobs = list(build_jobs(vocab, args.kind))
+    jobs = list(build_jobs(vocab, themes, args.kind))
     if args.limit:
         jobs = jobs[: args.limit]
     print(f"Total unique clips planned: {len(jobs)}")

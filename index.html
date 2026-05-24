@@ -1158,6 +1158,102 @@ const CATS = [
   {key:"phrases", label:"Frases",     en:"Phrases",  blurb:"Essential everyday expressions."},
 ];
 
+/* — Themed memorization decks (not CEFR-leveled).
+   Each card has the same shape as a phrase card: { s, e, n? }. */
+const DECKS = {
+  presentacion: {
+    title: "Mi presentación",
+    en: "Personal Intro",
+    blurb: "Memorize your self-introduction script — name, where you live, what you do.",
+    badge: "A2 · B1",
+    cards: [
+      {s:"Hola, me llamo Lindsey Jordan.", e:"Hello, my name is Lindsey Jordan."},
+      {s:"Soy de Estados Unidos.", e:"I am from the United States."},
+      {s:"Ahora vivo en Valencia, España.", e:"Now I live in Valencia, Spain."},
+      {s:"Vivo con mi familia.", e:"I live with my family."},
+      {s:"Antes vivíamos en Atlanta.", e:"Before, we lived in Atlanta."},
+      {s:"Decidimos mudarnos a España.", e:"We decided to move to Spain."},
+      {s:"Para comenzar una nueva etapa de vida.", e:"To begin a new stage of life."},
+      {s:"Trabajo de forma remota.", e:"I work remotely."},
+      {s:"Soy desarrollador de software y diseñador.", e:"I am a software developer and designer."},
+      {s:"Me gusta escribir y crear historias.", e:"I like to write and create stories."},
+      {s:"Estudio la Biblia.", e:"I study the Bible."},
+      {s:"Me gusta ayudar a otras personas con ideas creativas.", e:"I like to help others with creative ideas."},
+      {s:"Estoy aprendiendo español.", e:"I am learning Spanish."},
+      {s:"Quiero hablar mejor con la gente.", e:"I want to speak better with people."},
+      {s:"Quiero entender la cultura.", e:"I want to understand the culture."},
+      {s:"Quiero vivir con más confianza aquí.", e:"I want to live with more confidence here."},
+      {s:"Mi español no es perfecto.", e:"My Spanish is not perfect."},
+      {s:"Cada día practico un poco más.", e:"Every day I practice a little more."},
+      {s:"A veces me cuesta hablar rápido.", e:"Sometimes it's hard for me to speak quickly.", n:"'Me cuesta' = it's hard for me / it costs me effort."},
+      {s:"Pero no me rindo.", e:"But I don't give up.", n:"Rendirse = to give up (reflexive)."},
+      {s:"Para mí, aprender español es una aventura.", e:"For me, learning Spanish is an adventure."},
+      {s:"Poco a poco, quiero mejorar mi vocabulario.", e:"Little by little, I want to improve my vocabulary."},
+      {s:"Quiero mejorar mi pronunciación.", e:"I want to improve my pronunciation."},
+      {s:"Y mi capacidad de conversar en situaciones reales.", e:"And my ability to converse in real situations."},
+    ],
+  },
+
+  esperanza: {
+    title: "Esperanza en Cristo",
+    en: "Hope in Jesus",
+    blurb: "Share the gospel in Spanish — core phrases for natural conversation.",
+    badge: "A2 · B1",
+    cards: [
+      {s:"Quiero compartir algo importante contigo.", e:"I want to share something important with you."},
+      {s:"La esperanza verdadera viene de Jesucristo.", e:"True hope comes from Jesus Christ."},
+      {s:"La esperanza no viene solo de las circunstancias.", e:"Hope doesn't come only from circumstances."},
+      {s:"Ni del dinero, ni del éxito.", e:"Nor from money, nor from success."},
+      {s:"La Biblia enseña que Dios nos ama.", e:"The Bible teaches that God loves us."},
+      {s:"Jesús vino al mundo para salvarnos.", e:"Jesus came into the world to save us."},
+      {s:"Él murió por nuestros pecados.", e:"He died for our sins."},
+      {s:"Él resucitó.", e:"He rose again."},
+      {s:"No tenemos que vivir separados de Dios.", e:"We don't have to live separated from God."},
+      {s:"Ni atrapados por la culpa, el miedo o la desesperanza.", e:"Nor trapped by guilt, fear, or hopelessness."},
+      {s:"Jesús no es solo una idea religiosa.", e:"Jesus is not just a religious idea."},
+      {s:"Él es Señor, Salvador y Rey.", e:"He is Lord, Savior, and King."},
+      {s:"Cuando ponemos nuestra fe en Él,", e:"When we put our faith in Him,"},
+      {s:"Recibimos perdón y nueva vida.", e:"We receive forgiveness and new life."},
+      {s:"Recibimos una esperanza que no depende de los problemas de este mundo.", e:"We receive a hope that doesn't depend on the problems of this world."},
+      {s:"Si estás cansado, perdido o herido,", e:"If you're tired, lost, or hurt,"},
+      {s:"Hay esperanza en Jesucristo.", e:"There is hope in Jesus Christ."},
+      {s:"Puedes hablar con Dios ahora mismo.", e:"You can talk to God right now."},
+      {s:"Puedes pedirle perdón.", e:"You can ask Him for forgiveness."},
+      {s:"Puedes confiar en Jesús.", e:"You can trust in Jesus."},
+      {s:"Puedes comenzar una nueva vida con Él.", e:"You can begin a new life with Him."},
+      {s:"No necesitas tener todas las respuestas para acercarte a Dios.", e:"You don't need to have all the answers to come close to God."},
+      {s:"Solo necesitas venir con un corazón sincero.", e:"You only need to come with a sincere heart."},
+      {s:"En Cristo hay perdón, descanso, propósito y vida eterna.", e:"In Christ there is forgiveness, rest, purpose, and eternal life."},
+    ],
+  },
+
+  salmo23: {
+    title: "Salmo 23",
+    en: "Psalm 23",
+    blurb: "Memorize Psalm 23 chunk by chunk (Reina-Valera).",
+    badge: "B1 · B2",
+    cards: [
+      {s:"Jehová es mi pastor.", e:"The Lord is my shepherd."},
+      {s:"Nada me faltará.", e:"I shall not want.", n:"Faltar = to be lacking. Connects to 'me hace falta' = I need."},
+      {s:"En lugares de delicados pastos me hará yacer.", e:"He will make me lie down in tender pastures."},
+      {s:"Junto a aguas de reposo me pastoreará.", e:"Beside restful waters He will shepherd me."},
+      {s:"Confortará mi alma.", e:"He will restore my soul."},
+      {s:"Guiaráme por sendas de justicia.", e:"He will guide me through paths of righteousness."},
+      {s:"Por amor de su nombre.", e:"For the sake of His name."},
+      {s:"Aunque ande en valle de sombra de muerte,", e:"Though I walk in the valley of the shadow of death,", n:"'Aunque' + subjunctive."},
+      {s:"No temeré mal alguno.", e:"I will fear no evil."},
+      {s:"Porque tú estarás conmigo.", e:"For You will be with me."},
+      {s:"Tu vara y tu cayado me infundirán aliento.", e:"Your rod and Your staff will give me courage."},
+      {s:"Aderezarás mesa delante de mí,", e:"You will prepare a table before me,"},
+      {s:"En presencia de mis angustiadores.", e:"In the presence of those who trouble me."},
+      {s:"Ungiste mi cabeza con aceite.", e:"You anointed my head with oil."},
+      {s:"Mi copa está rebosando.", e:"My cup is overflowing."},
+      {s:"Ciertamente el bien y la misericordia me seguirán todos los días de mi vida.", e:"Surely goodness and mercy will follow me all the days of my life."},
+      {s:"Y en la casa de Jehová moraré por largos días.", e:"And I will dwell in the house of the Lord for long days."},
+    ],
+  },
+};
+
 /* ---------- Audio helpers ---------- */
 
 function normalize(s){
@@ -1287,6 +1383,10 @@ function navigate(r){
   if(route.name === 'home'){
     backBtn.style.display = 'none';
     appSub.textContent = 'A1 → C2 · ESPAÑA';
+  } else if(route.themeKey){
+    backBtn.style.display = '';
+    const d = DECKS[route.themeKey];
+    appSub.textContent = (d?.badge || 'MEM') + ' · ' + (d?.en || '').toUpperCase();
   } else {
     backBtn.style.display = '';
     appSub.textContent = route.level + ' · ' + (CATS.find(c=>c.key===route.cat)?.en || '').toUpperCase();
@@ -1360,6 +1460,31 @@ function renderHome(){
     </div>
   `;
 
+  // Themed memorization decks
+  const themeKeys = Object.keys(DECKS);
+  html += `
+    <div class="section-label" style="margin-top:28px;">// Memorizar · personal decks</div>
+    <div class="cat-grid">
+      ${themeKeys.map(k => {
+        const d = DECKS[k];
+        const st = getDeckState('THEME', k);
+        const learned = Object.values(st.boxes).filter(b=>b>=3).length;
+        const pct = d.cards.length ? Math.round(learned/d.cards.length*100) : 0;
+        return `
+          <button class="cat-card theme" data-theme="${k}">
+            <div class="ico">// ${d.en.toUpperCase()} · ${d.badge}</div>
+            <h3>${d.title}</h3>
+            <div class="desc">${d.blurb}</div>
+            <div class="stats">
+              <span>${d.cards.length} cards</span>
+              <span class="done">${pct}% drilled</span>
+            </div>
+            <div class="progress-bar"><i style="width:${pct}%"></i></div>
+          </button>`;
+      }).join('')}
+    </div>
+  `;
+
   main.innerHTML = html;
 
   main.querySelectorAll('.level-card').forEach(btn => {
@@ -1373,11 +1498,32 @@ function renderHome(){
       }, 50);
     });
   });
-  main.querySelectorAll('.cat-card').forEach(btn => {
+  main.querySelectorAll('.cat-card[data-cat]').forEach(btn => {
     btn.addEventListener('click', () => {
       startStudy(route._selectedLevel || 'A1', btn.dataset.cat);
     });
   });
+  main.querySelectorAll('.cat-card[data-theme]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      startTheme(btn.dataset.theme);
+    });
+  });
+}
+
+function startTheme(themeKey){
+  const deck = DECKS[themeKey];
+  if(!deck) return;
+  const state = getDeckState('THEME', themeKey);
+  const queue = deck.cards.slice().sort((a,b) => {
+    const ka = themeItemId(themeKey, a), kb = themeItemId(themeKey, b);
+    const ba = state.boxes[ka] ?? 0, bb = state.boxes[kb] ?? 0;
+    return ba - bb;
+  });
+  navigate({name:'study', themeKey, queue, idx:0, flipped:false});
+}
+
+function themeItemId(themeKey, item){
+  return 'THEME:' + themeKey + ':' + item.s;
 }
 
 function startStudy(level, cat){
@@ -1404,7 +1550,9 @@ function startStudy(level, cat){
 }
 
 function renderStudy(){
-  const { level, cat, queue, idx } = route;
+  const { level, cat, themeKey, queue, idx } = route;
+  const isTheme = !!themeKey;
+  const themeDeck = isTheme ? DECKS[themeKey] : null;
   const item = queue[idx];
   if(!item){
     main.innerHTML = `
@@ -1413,11 +1561,13 @@ function renderStudy(){
         <p>// you've cycled through every card in this deck. progress saved to local cache. swing back later to consolidate.</p>
         <button class="btn flip" id="againBtn">Re-run deck</button>
       </div>`;
-    document.getElementById('againBtn').onclick = () => startStudy(level, cat);
+    document.getElementById('againBtn').onclick = () => isTheme ? startTheme(themeKey) : startStudy(level, cat);
     return;
   }
 
-  const meta = CATS.find(c=>c.key===cat);
+  const meta = isTheme ? null : CATS.find(c=>c.key===cat);
+  const displayLevel = isTheme ? (themeDeck.badge || 'MEM') : level;
+  const displayCat   = isTheme ? themeDeck.en : meta.en;
   let front = '', back = '';
   let spokenText = '';
 
@@ -1461,16 +1611,19 @@ function renderStudy(){
         <div class="conj">${conjRows}</div>
       </div>
       <div class="hint">tap to flip back</div>`;
-  } else { // phrases
+  } else { // phrases (CEFR) or themed cards — same shape {s, e, n?}
     spokenText = item.s;
+    const labelFront = isTheme ? themeDeck.en.toUpperCase() : 'PHRASE';
+    const labelBack  = isTheme ? 'TRANSLATION' : 'TRANSLATION';
+    const badgeFront = isTheme ? 'MEM' : 'FRS';
     front = `
-      <div class="meta"><span class="id">${level} · PHRASE</span><span class="gender">FRS</span></div>
+      <div class="meta"><span class="id">${displayLevel} · ${labelFront}</span><span class="gender">${badgeFront}</span></div>
       <div class="word-wrap">
-        <div class="word" style="font-size:clamp(22px,5.5vw,34px);">${escapeHtml(item.s)}</div>
+        <div class="word" style="font-size:clamp(20px,5vw,30px); line-height:1.25;">${escapeHtml(item.s)}</div>
       </div>
       <div class="hint">tap to flip · → know · ← unknown</div>`;
     back = `
-      <div class="meta"><span class="id">${level} · TRANSLATION</span><span class="gender">EN</span></div>
+      <div class="meta"><span class="id">${displayLevel} · ${labelBack}</span><span class="gender">EN</span></div>
       <div class="word-wrap">
         <div class="phrase-en">${escapeHtml(item.e)}</div>
         ${item.n ? `<div class="phrase-note">// ${escapeHtml(item.n)}</div>` : ''}
@@ -1478,15 +1631,18 @@ function renderStudy(){
       <div class="hint">tap to flip back</div>`;
   }
 
+  const remaining = isTheme
+    ? remainingThemeLabel(themeKey, queue)
+    : remainingLabel(level, cat, queue);
   main.innerHTML = `
     <div class="study">
       <div class="crumb">
-        <span class="pill">${level}</span>
-        <span class="pill m">${meta.en}</span>
+        <span class="pill">${escapeHtml(displayLevel)}</span>
+        <span class="pill m">${escapeHtml(displayCat)}</span>
       </div>
       <div class="deckhead">
         <span>// Card <span class="count">${idx+1}</span> / ${queue.length}</span>
-        <span>${remainingLabel(level, cat, queue)}</span>
+        <span>${remaining}</span>
       </div>
       <div class="stage">
         <div class="swipe-hint left">← unknown</div>
@@ -1607,12 +1763,25 @@ function remainingLabel(level, cat, queue){
   return `${learned}/${total} drilled`;
 }
 
+function remainingThemeLabel(themeKey, queue){
+  const state = getDeckState('THEME', themeKey);
+  const total = queue.length;
+  const learned = queue.filter(i => (state.boxes[themeItemId(themeKey, i)] ?? 0) >= 3).length;
+  return `${learned}/${total} drilled`;
+}
+
+function currentDeckStateAndKey(item){
+  if(route.themeKey){
+    return { state: getDeckState('THEME', route.themeKey), id: themeItemId(route.themeKey, item) };
+  }
+  return { state: getDeckState(route.level, route.cat), id: itemId(route.level, route.cat, item) };
+}
+
 function markKnown(){
-  const { level, cat, queue, idx } = route;
+  const { queue, idx } = route;
   const item = queue[idx];
   if(!item) return;
-  const state = getDeckState(level, cat);
-  const id = itemId(level, cat, item);
+  const { state, id } = currentDeckStateAndKey(item);
   state.boxes[id] = Math.min((state.boxes[id] ?? 0) + 1, 4);
   saveProgress(progress);
   showToast('✓ Marked known', 'pass');
@@ -1620,11 +1789,10 @@ function markKnown(){
 }
 
 function markUnknown(){
-  const { level, cat, queue, idx } = route;
+  const { queue, idx } = route;
   const item = queue[idx];
   if(!item) return;
-  const state = getDeckState(level, cat);
-  const id = itemId(level, cat, item);
+  const { state, id } = currentDeckStateAndKey(item);
   state.boxes[id] = 0;
   // requeue this item further back
   const itemRef = queue.splice(idx,1)[0];
